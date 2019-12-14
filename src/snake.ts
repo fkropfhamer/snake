@@ -47,7 +47,7 @@ export default class Snake {
         const newHead = new Rectangle(newX, newY, Config.SNAKE_HEAD_COLOR);
 
         if (newHead.isOnSamePosition(apple)) {
-            this.game.placeApple(newHead, this.snakeSegments);
+            this.game.placeApple([newHead, ...this.snakeSegments]);
         } else {
             this.snakeSegments.pop();
         }

@@ -21,9 +21,7 @@ export default class Game {
         clearInterval(this.interval);
     }
 
-    public placeApple(snakeHead: Rectangle, snakeSegments: Rectangle[]): void {
-        const occupiedPositions: Rectangle[] = [snakeHead, ...snakeSegments];
-
+    public placeApple(occupiedPositions: Rectangle[]): void {
         let x: number;
         let y: number;
         let newApple: Apple;
