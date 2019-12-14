@@ -3,7 +3,6 @@ import Config from "./config";
 import { Key } from "./enums";
 import Rectangle from "./rectangle";
 import Snake from "./snake";
-import Util from "./util";
 import View from "./view";
 
 export default class Game {
@@ -35,7 +34,7 @@ export default class Game {
 
             newApple = new Apple(x, y);
 
-            if (!Util.isOcuppiedPosition(newApple, occupiedPositions)) {
+            if (!newApple.isOnOcuppiedPosition(occupiedPositions)) {
                 this.apple = newApple;
                 break;
             }

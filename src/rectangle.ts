@@ -1,7 +1,6 @@
 import { Color } from "./enums";
-import IPosition from "./positioninterface";
 
-export default class Rectangle implements IPosition {
+export default class Rectangle {
     protected x: number;
     protected y: number;
     private color: Color;
@@ -29,6 +28,18 @@ export default class Rectangle implements IPosition {
             return true;
         }
         return false;
+    }
+
+    public isOnOcuppiedPosition(occupiedPositions: Rectangle[]): boolean {
+        const onSamePositions: boolean[] = occupiedPositions.map((occupiedPosition: Rectangle) => {
+            return this.isOnSamePosition(occupiedPosition);
+        });
+
+        const isOcuppied: boolean = onSamePositions.reduce((acc, onSamePosition) => {
+            return acc || onSamePosition;
+        });
+
+        return isOcuppied;
     }
 
     public draw(): void {

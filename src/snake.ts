@@ -3,7 +3,6 @@ import Config from "./config";
 import { Key } from "./enums";
 import Game from "./game";
 import Rectangle from "./rectangle";
-import Util from "./util";
 
 export default class Snake {
     private snakeSegments: Rectangle[] = [];
@@ -53,7 +52,7 @@ export default class Snake {
             this.snakeSegments.pop();
         }
 
-        const isHittingItSelf: boolean = Util.isOcuppiedPosition(newHead, this.snakeSegments);
+        const isHittingItSelf: boolean = newHead.isOnOcuppiedPosition(this.snakeSegments);
 
         if (isHittingItSelf) {
             this.game.end();
