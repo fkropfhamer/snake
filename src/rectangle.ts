@@ -1,6 +1,7 @@
 import { Color } from "./enums";
+import IPosition from "./positioninterface";
 
-export default class Rectangle {
+export default class Rectangle implements IPosition {
     protected x: number;
     protected y: number;
     private color: Color;

@@ -3,6 +3,7 @@ import Config from "./config";
 import { Key } from "./enums";
 import Game from "./game";
 import Rectangle from "./rectangle";
+import Util from "./util";
 
 export default class Snake {
     private snakeSegments: Rectangle[] = [];
@@ -47,18 +48,12 @@ export default class Snake {
         const newHead = new Rectangle(newX, newY, Config.SNAKE_HEAD_COLOR);
 
         if (newHead.isOnSamePosition(apple)) {
-            this.game.placeApple();
+            this.game.placeApple(newHead, this.snakeSegments);
         } else {
             this.snakeSegments.pop();
         }
 
-        const onSamePositions: boolean[] = this.snakeSegments.map((snakeSegment: Rectangle) => {
-            return snakeSegment.isOnSamePosition(newHead);
-        });
-
-        const isHittingItSelf: boolean = onSamePositions.reduce((acc, onSamePosition) => {
-            return acc || onSamePosition;
-        });
+        const isHittingItSelf: boolean = Util.isOcuppiedPosition(newHead, this.snakeSegments);
 
         if (isHittingItSelf) {
             this.game.end();

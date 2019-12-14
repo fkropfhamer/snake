@@ -1,7 +1,9 @@
 import Apple from "./apple";
 import Config from "./config";
 import { Key } from "./enums";
+import Rectangle from "./rectangle";
 import Snake from "./snake";
+import Util from "./util";
 import View from "./view";
 
 export default class Game {
@@ -20,8 +22,24 @@ export default class Game {
         clearInterval(this.interval);
     }
 
-    public placeApple(): void {
-        // TODO
+    public placeApple(snakeHead: Rectangle, snakeSegments: Rectangle[]): void {
+        const occupiedPositions: Rectangle[] = [snakeHead, ...snakeSegments];
+
+        let x: number;
+        let y: number;
+        let newApple: Apple;
+
+        while (true) {
+            x = Math.round(Math.random() * Config.PLAY_FIELD_SIZE);
+            y = Math.round(Math.random() * Config.PLAY_FIELD_SIZE);
+
+            newApple = new Apple(x, y);
+
+            if (!Util.isOcuppiedPosition(newApple, occupiedPositions)) {
+                this.apple = newApple;
+                break;
+            }
+        }
     }
 
     private setup(): void {
