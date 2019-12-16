@@ -27,8 +27,8 @@ export default class Game {
         let newApple: Apple;
 
         while (true) {
-            x = Math.round(Math.random() * Config.PLAY_FIELD_SIZE);
-            y = Math.round(Math.random() * Config.PLAY_FIELD_SIZE);
+            x = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
+            y = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
 
             newApple = new Apple(x, y);
 
