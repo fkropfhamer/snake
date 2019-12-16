@@ -3,6 +3,7 @@ import Config from "./config";
 import { Key } from "./enums";
 import Game from "./game";
 import Rectangle from "./rectangle";
+import View from "./view";
 
 export default class Snake {
     private snakeSegments: Rectangle[] = [];
@@ -14,8 +15,12 @@ export default class Snake {
         this.game = game;
     }
 
-    public draw(): void {
-        this.snakeSegments.forEach((snakeSegment: Rectangle) => snakeSegment.draw());
+    public draw(view: View): void {
+        this.snakeSegments.forEach((snakeSegment: Rectangle) => snakeSegment.draw(view));
+    }
+
+    public getSnakeSegments(): Rectangle[] {
+        return this.snakeSegments;
     }
 
     public update(lastKeyPressed: Key, apple: Apple): void {
@@ -40,22 +45,22 @@ export default class Snake {
                 break;
         }
 
-        if (newX < 0 || newX > Config.PLAY_FIELD_SIZE || newY < 0 || newY > Config.PLAY_FIELD_SIZE) {
+        if (newX < 0 || newX >= Config.PLAY_FIELD_SIZE || newY < 0 || newY >= Config.PLAY_FIELD_SIZE) {
             this.game.end();
         }
 
         const newHead = new Rectangle(newX, newY, Config.SNAKE_HEAD_COLOR);
 
-        if (newHead.isOnSamePosition(apple)) {
-            this.game.placeApple([newHead, ...this.snakeSegments]);
-        } else {
-            this.snakeSegments.pop();
-        }
-
         const isHittingItSelf: boolean = newHead.isOnOcuppiedPosition(this.snakeSegments);
 
         if (isHittingItSelf) {
             this.game.end();
+        }
+
+        if (newHead.isOnSamePosition(apple)) {
+            this.game.placeApple([newHead, ...this.snakeSegments]);
+        } else {
+            this.snakeSegments.pop();
         }
 
         this.snakeSegments.unshift(newHead);

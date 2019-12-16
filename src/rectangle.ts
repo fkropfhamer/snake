@@ -1,4 +1,5 @@
 import { Color } from "./enums";
+import View from "./view";
 
 export default class Rectangle {
     protected x: number;
@@ -37,12 +38,12 @@ export default class Rectangle {
 
         const isOcuppied: boolean = onSamePositions.reduce((acc, onSamePosition) => {
             return acc || onSamePosition;
-        });
+        }, false);
 
         return isOcuppied;
     }
 
-    public draw(): void {
-        // TODO
+    public draw(view: View): void {
+        view.drawSquare(this.x, this.y, this.color);
     }
 }

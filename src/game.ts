@@ -42,7 +42,28 @@ export default class Game {
     private setup(): void {
         this.view = new View();
         this.snake = new Snake(0, 0, this);
-        this.apple = new Apple(0, 0);
+        this.placeApple(this.snake.getSnakeSegments());
+        window.addEventListener("keyup", this.onKeyUp.bind(this));
+    }
+
+    private onKeyUp(event: KeyboardEvent): void {
+        switch (event.code) {
+            case Key.ARROW_DOWN:
+                this.lastKeyPressed = Key.ARROW_DOWN;
+                break;
+            case Key.ARROW_LEFT:
+                this.lastKeyPressed = Key.ARROW_LEFT;
+                break;
+
+            case Key.ARROW_RIGHT:
+                this.lastKeyPressed = Key.ARROW_RIGHT;
+                break;
+            case Key.ARROW_UP:
+                this.lastKeyPressed = Key.ARROW_UP;
+                break;
+            default:
+                this.lastKeyPressed = this.lastKeyPressed;
+        }
     }
 
     private start(): void {
@@ -55,8 +76,9 @@ export default class Game {
     }
 
     private draw(): void {
-        this.apple.draw();
-        this.snake.draw();
+        this.view.reset();
+        this.apple.draw(this.view);
+        this.snake.draw(this.view);
     }
 
     private update(): void {
