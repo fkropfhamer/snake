@@ -1,36 +1,94 @@
 import Apple from "./apple";
 import Config from "./config";
 import { Key } from "./enums";
-import Game from "./game";
 import Rectangle from "./rectangle";
 import View from "./view";
 
 export default class Snake {
+    private view: View;
+    private apple: Apple;
+    private interval: NodeJS.Timeout;
+    private lastKeyPressed: Key = Key.ARROW_DOWN;
     private snakeSegments: Rectangle[] = [];
-    private game: Game;
 
-    constructor(x: number, y: number, game: Game) {
-        const head = new Rectangle(x, y, Config.SNAKE_HEAD_COLOR);
+    constructor() {
+        this.setup();
+        this.start();
+    }
+
+    private end(): void {
+        clearInterval(this.interval);
+    }
+
+    private placeApple(): void {
+        let x: number;
+        let y: number;
+        let newApple: Apple;
+
+        while (true) {
+            x = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
+            y = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
+
+            newApple = new Apple(x, y);
+
+            if (!newApple.isOnOcuppiedPosition(this.snakeSegments)) {
+                this.apple = newApple;
+                break;
+            }
+        }
+    }
+
+    private setup(): void {
+        const head = new Rectangle(0, 0, Config.SNAKE_HEAD_COLOR);
         this.snakeSegments.unshift(head);
-        this.game = game;
+        this.view = new View();
+        this.placeApple();
+        window.addEventListener("keyup", this.onKeyUp.bind(this));
     }
 
-    public draw(view: View): void {
-        this.snakeSegments.forEach((snakeSegment: Rectangle) => snakeSegment.draw(view));
+    private onKeyUp(event: KeyboardEvent): void {
+        switch (event.code) {
+            case Key.ARROW_DOWN:
+                this.lastKeyPressed = Key.ARROW_DOWN;
+                break;
+            case Key.ARROW_LEFT:
+                this.lastKeyPressed = Key.ARROW_LEFT;
+                break;
+
+            case Key.ARROW_RIGHT:
+                this.lastKeyPressed = Key.ARROW_RIGHT;
+                break;
+            case Key.ARROW_UP:
+                this.lastKeyPressed = Key.ARROW_UP;
+                break;
+            default:
+                this.lastKeyPressed = this.lastKeyPressed;
+        }
     }
 
-    public getSnakeSegments(): Rectangle[] {
-        return this.snakeSegments;
+    private start(): void {
+        this.interval = setInterval(this.loop.bind(this), Config.LOOP_INTERVAL);
     }
 
-    public update(lastKeyPressed: Key, apple: Apple): void {
+    private loop(): void {
+        this.update();
+        this.draw();
+    }
+
+    private draw(): void {
+        this.view.reset();
+        this.apple.draw(this.view);
+        this.snakeSegments.forEach((snakeSegment: Rectangle) => snakeSegment.draw(this.view));
+    }
+
+    private update(): void {
         const oldHead: Rectangle = this.head;
         oldHead.setColor(Config.SNAKE_SEGMENTS_COLOR);
 
         let newX: number = oldHead.getX();
         let newY: number = oldHead.getY();
 
-        switch (lastKeyPressed) {
+        switch (this.lastKeyPressed) {
             case Key.ARROW_DOWN:
                 newY += 1;
                 break;
@@ -46,7 +104,7 @@ export default class Snake {
         }
 
         if (newX < 0 || newX >= Config.PLAY_FIELD_SIZE || newY < 0 || newY >= Config.PLAY_FIELD_SIZE) {
-            this.game.end();
+            this.end();
         }
 
         const newHead = new Rectangle(newX, newY, Config.SNAKE_HEAD_COLOR);
@@ -54,20 +112,19 @@ export default class Snake {
         const isHittingItSelf: boolean = newHead.isOnOcuppiedPosition(this.snakeSegments);
 
         if (isHittingItSelf) {
-            this.game.end();
-        }
-
-        if (newHead.isOnSamePosition(apple)) {
-            this.game.placeApple([newHead, ...this.snakeSegments]);
-        } else {
-            this.snakeSegments.pop();
+            this.end();
         }
 
         this.snakeSegments.unshift(newHead);
+
+        if (newHead.isOnSamePosition(this.apple)) {
+            this.placeApple();
+        } else {
+            this.snakeSegments.pop();
+        }
     }
 
     private get head(): Rectangle {
         return this.snakeSegments[0];
     }
-
 }
