@@ -54,7 +54,6 @@ export default class Snake {
             case Key.ARROW_LEFT:
                 this.lastKeyPressed = Key.ARROW_LEFT;
                 break;
-
             case Key.ARROW_RIGHT:
                 this.lastKeyPressed = Key.ARROW_RIGHT;
                 break;

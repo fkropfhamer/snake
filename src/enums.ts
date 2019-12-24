@@ -2,6 +2,7 @@ export enum Color {
     GREEN = "green",
     RED = "red",
     BLUE = "blue",
+    BLACK = "black",
 }
 
 export enum Key {
