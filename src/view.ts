@@ -1,21 +1,36 @@
-import Config from "./config";
 import { Color } from "./enums";
+import Rectangle from "./rectangle";
+
+interface GameState {
+    snakeSegments: Rectangle[],
+    apple: Rectangle,
+}
 
 export default class View {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
     private cellSize: number;
+    private playFieldSize: number;
 
-    constructor() {
+    constructor(playFieldSize: number) {
+        this.playFieldSize = playFieldSize;
         this.setupCanvas();
     }
 
-    public reset(): void {
+    public drawGameState(gameState: GameState): void {
+        this.reset();
+        gameState.snakeSegments.forEach(snakeSegment => {
+            this.drawSquare(snakeSegment.x, snakeSegment.y, snakeSegment.color)
+        });
+        this.drawSquare(gameState.apple.x, gameState.apple.y, gameState.apple.color);
+    }
+
+    private reset(): void {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawPlayField();
     }
 
-    public drawSquare(x: number, y: number, color: Color): void {
+    private drawSquare(x: number, y: number, color: Color): void {
         this.context.fillStyle = color;
         this.context.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
     }
@@ -35,14 +50,14 @@ export default class View {
 
         const canvasSize: number = windowWidth >= windowHeight ? windowHeight : windowWidth;
 
-        this.cellSize = canvasSize / Config.PLAY_FIELD_SIZE;
+        this.cellSize = canvasSize / this.playFieldSize;
 
         this.canvas.width = canvasSize;
         this.canvas.height = canvasSize;
     }
 
     private drawPlayField(): void {
-        const endOfPlayField: number = Config.PLAY_FIELD_SIZE * this.cellSize;
+        const endOfPlayField: number = this.playFieldSize * this.cellSize;
         for (let i = 0; i <= endOfPlayField; i += this.cellSize) {
             this.drawLine(i, 0, i, endOfPlayField);
             this.drawLine(0, i, endOfPlayField, i);

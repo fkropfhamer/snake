@@ -41,7 +41,7 @@ export default class Snake {
     private setup(): void {
         const head = new Rectangle(0, 0, Config.SNAKE_HEAD_COLOR);
         this.snakeSegments.unshift(head);
-        this.view = new View();
+        this.view = new View(Config.PLAY_FIELD_SIZE);
         this.placeApple();
         window.addEventListener("keyup", this.onKeyUp.bind(this));
     }
@@ -75,17 +75,15 @@ export default class Snake {
     }
 
     private draw(): void {
-        this.view.reset();
-        this.apple.draw(this.view);
-        this.snakeSegments.forEach((snakeSegment: Rectangle) => snakeSegment.draw(this.view));
+        this.view.drawGameState({ snakeSegments: this.snakeSegments, apple: this.apple });
     }
 
     private update(): void {
         const oldHead: Rectangle = this.head;
-        oldHead.setColor(Config.SNAKE_SEGMENTS_COLOR);
+        oldHead.color = Config.SNAKE_SEGMENTS_COLOR;
 
-        let newX: number = oldHead.getX();
-        let newY: number = oldHead.getY();
+        let newX: number = oldHead.x;
+        let newY: number = oldHead.y;
 
         switch (this.lastKeyPressed) {
             case Key.ARROW_DOWN:

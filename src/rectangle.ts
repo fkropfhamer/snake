@@ -1,26 +1,13 @@
 import { Color } from "./enums";
-import View from "./view";
 
 export default class Rectangle {
-    protected x: number;
-    protected y: number;
-    private color: Color;
+    x: number;
+    y: number;
+    color: Color;
 
     constructor(x: number, y: number, color: Color) {
         this.x = x;
         this.y = y;
-        this.color = color;
-    }
-
-    public getX(): number {
-        return this.x;
-    }
-
-    public getY(): number {
-        return this.y;
-    }
-
-    public setColor(color: Color): void {
         this.color = color;
     }
 
@@ -41,9 +28,5 @@ export default class Rectangle {
         }, false);
 
         return isOcuppied;
-    }
-
-    public draw(view: View): void {
-        view.drawSquare(this.x, this.y, this.color);
     }
 }
