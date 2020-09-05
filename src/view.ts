@@ -1,9 +1,9 @@
 import { Color } from "./enums";
-import Rectangle from "./rectangle";
+import Point from "./point";
 
 interface GameState {
-    snakeSegments: Rectangle[],
-    apple: Rectangle,
+    snakeSegments: Point[],
+    apple: Point,
 }
 
 export default class View {
@@ -19,10 +19,14 @@ export default class View {
 
     public drawGameState(gameState: GameState): void {
         this.reset();
-        gameState.snakeSegments.forEach(snakeSegment => {
-            this.drawSquare(snakeSegment.x, snakeSegment.y, snakeSegment.color)
+        gameState.snakeSegments.forEach((snakeSegment, i) => {
+            if (i) {
+                this.drawSquare(snakeSegment.x, snakeSegment.y, Color.BLACK);
+                return
+            }
+            this.drawSquare(snakeSegment.x, snakeSegment.y, Color.GREEN)
         });
-        this.drawSquare(gameState.apple.x, gameState.apple.y, gameState.apple.color);
+        this.drawSquare(gameState.apple.x, gameState.apple.y, Color.RED);
     }
 
     private reset(): void {

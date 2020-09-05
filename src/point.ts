@@ -1,25 +1,21 @@
-import { Color } from "./enums";
-
-export default class Rectangle {
+export default class Point {
     x: number;
     y: number;
-    color: Color;
 
-    constructor(x: number, y: number, color: Color) {
+    constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.color = color;
     }
 
-    public isOnSamePosition(rectangle: Rectangle): boolean {
+    public isOnSamePosition(rectangle: Point): boolean {
         if (this.x === rectangle.x && this.y === rectangle.y) {
             return true;
         }
         return false;
     }
 
-    public isOnOcuppiedPosition(occupiedPositions: Rectangle[]): boolean {
-        const onSamePositions: boolean[] = occupiedPositions.map((occupiedPosition: Rectangle) => {
+    public isOnOcuppiedPosition(occupiedPositions: Point[]): boolean {
+        const onSamePositions: boolean[] = occupiedPositions.map((occupiedPosition: Point) => {
             return this.isOnSamePosition(occupiedPosition);
         });
 

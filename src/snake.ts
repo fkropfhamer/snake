@@ -1,15 +1,14 @@
-import Apple from "./apple";
 import Config from "./config";
 import { Key } from "./enums";
-import Rectangle from "./rectangle";
+import Point from "./point";
 import View from "./view";
 
 export default class Snake {
     private view: View;
-    private apple: Apple;
+    private apple: Point;
     private interval: NodeJS.Timeout;
     private lastKeyPressed: Key = Key.ARROW_DOWN;
-    private snakeSegments: Rectangle[] = [];
+    private snakeSegments: Point[] = [];
 
     constructor() {
         this.setup();
@@ -23,13 +22,13 @@ export default class Snake {
     private placeApple(): void {
         let x: number;
         let y: number;
-        let newApple: Apple;
+        let newApple: Point;
 
         while (true) {
             x = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
             y = Math.floor(Math.random() * Config.PLAY_FIELD_SIZE);
 
-            newApple = new Apple(x, y);
+            newApple = new Point(x, y);
 
             if (!newApple.isOnOcuppiedPosition(this.snakeSegments)) {
                 this.apple = newApple;
@@ -39,7 +38,7 @@ export default class Snake {
     }
 
     private setup(): void {
-        const head = new Rectangle(0, 0, Config.SNAKE_HEAD_COLOR);
+        const head = new Point(0, 0);
         this.snakeSegments.unshift(head);
         this.view = new View(Config.PLAY_FIELD_SIZE);
         this.placeApple();
@@ -79,8 +78,7 @@ export default class Snake {
     }
 
     private update(): void {
-        const oldHead: Rectangle = this.head;
-        oldHead.color = Config.SNAKE_SEGMENTS_COLOR;
+        const oldHead: Point = this.head;
 
         let newX: number = oldHead.x;
         let newY: number = oldHead.y;
@@ -104,7 +102,7 @@ export default class Snake {
             this.end();
         }
 
-        const newHead = new Rectangle(newX, newY, Config.SNAKE_HEAD_COLOR);
+        const newHead = new Point(newX, newY);
 
         const isHittingItSelf: boolean = newHead.isOnOcuppiedPosition(this.snakeSegments);
 
@@ -121,7 +119,7 @@ export default class Snake {
         }
     }
 
-    private get head(): Rectangle {
+    private get head(): Point {
         return this.snakeSegments[0];
     }
 }
