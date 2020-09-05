@@ -61,7 +61,7 @@ export default class Snake {
                 this.lastKeyPressed = Key.ARROW_UP;
                 break;
             default:
-                this.lastKeyPressed = this.lastKeyPressed;
+                break;
         }
     }
 
@@ -102,7 +102,7 @@ export default class Snake {
                 break;
         }
 
-        if (newX < 0 || newX >= Config.PLAY_FIELD_SIZE || newY < 0 || newY >= Config.PLAY_FIELD_SIZE) {
+        if (newX < 0 || newX >= Config.PLAY_FIELD_SIZE || newY < 0 || newY >= Config.PLAY_FIELD_SIZE) {
             this.end();
         }
 

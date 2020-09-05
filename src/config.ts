@@ -5,6 +5,6 @@ export default abstract class Config {
     public static SNAKE_HEAD_COLOR: Color = Color.BLACK;
     public static SNAKE_SEGMENTS_COLOR: Color = Color.GREEN;
 
-    public static LOOP_INTERVAL: number = 1000;
-    public static PLAY_FIELD_SIZE: number = 10;
+    public static LOOP_INTERVAL = 1000;
+    public static PLAY_FIELD_SIZE = 10;
 }

@@ -15,7 +15,7 @@ export default class View {
         this.drawPlayField();
     }
 
-    public drawSquare(x: number, y: number, color: Color) {
+    public drawSquare(x: number, y: number, color: Color): void {
         this.context.fillStyle = color;
         this.context.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
     }
@@ -43,7 +43,7 @@ export default class View {
 
     private drawPlayField(): void {
         const endOfPlayField: number = Config.PLAY_FIELD_SIZE * this.cellSize;
-        for (let i: number = 0; i <= endOfPlayField; i += this.cellSize) {
+        for (let i = 0; i <= endOfPlayField; i += this.cellSize) {
             this.drawLine(i, 0, i, endOfPlayField);
             this.drawLine(0, i, endOfPlayField, i);
         }
