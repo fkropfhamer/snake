@@ -1,12 +1,15 @@
 {
-  "name": "snake",
-  "version": "0.1.0",
+  "name": "@fkropfhamer/snake",
+  "version": "0.0.0",
   "description": "snake game",
-  "main": "public/main.ts",
+  "main": "lib/index.js",
+  "types": "lib/snake.d.ts",
   "scripts": {
     "test": "jest",
     "watch": "webpack --watch --mode development",
     "build": "webpack --mode production",
+    "package": "tsc",
+    "prepare": "npm run package",
     "lint": "eslint ./src --ext .ts"
   },
   "keywords": [
@@ -33,5 +36,13 @@
     "typescript": "^4.0.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
-  }
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "private": false,
+  "bugs": {
+    "url": "https://github.com/fkropfhamer/snake/issues"
+  },
+  "homepage": "https://github.com/fkropfhamer/snake#readme"
 }
